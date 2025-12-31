@@ -33,6 +33,21 @@ export function log(message: string, source = "express") {
   console.log(`${formattedTime} [${source}] ${message}`);
 }
 
+// Handle unhandled promise rejections
+process.on("unhandledRejection", (reason: any, promise) => {
+  log(`Unhandled Promise Rejection: ${reason?.message || reason}`, "error");
+  console.error("Promise:", promise);
+  if (reason?.stack) {
+    console.error(reason.stack);
+  }
+});
+
+// Handle uncaught exceptions
+process.on("uncaughtException", (error: Error) => {
+  log(`Uncaught Exception: ${error.message}`, "error");
+  console.error(error.stack);
+});
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
@@ -60,14 +75,23 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // Initialize database
+  const { initializeDatabase } = await import("./storage");
+  await initializeDatabase();
+  log("Database initialized");
+
   await registerRoutes(httpServer, app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
 
+    log(`Error ${status}: ${message}`, "error");
+    if (err.stack) {
+      console.error(err.stack);
+    }
+
     res.status(status).json({ message });
-    throw err;
   });
 
   // importantly only setup vite in development and after
@@ -81,18 +105,17 @@ app.use((req, res, next) => {
   }
 
   // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
+  // Other ports are firewalled. Default to 3001 if not specified.
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || "5000", 10);
+  const port = parseInt(process.env.PORT || "3001", 10);
+  const host = process.env.HOST || (process.env.NODE_ENV === "production" ? "0.0.0.0" : "localhost");
+
   httpServer.listen(
-    {
-      port,
-      host: "0.0.0.0",
-      reusePort: true,
-    },
+    port,
+    host,
     () => {
-      log(`serving on port ${port}`);
+      log(`serving on ${host}:${port}`);
     },
   );
 })();

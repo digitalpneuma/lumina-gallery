@@ -1,5 +1,8 @@
 import { Switch, Route } from "wouter";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "next-themes";
 import { GalleryProvider } from "@/lib/gallery-context";
+import { queryClient } from "@/lib/queryClient";
 import { Layout } from "@/components/layout";
 import { Toaster } from "@/components/ui/toaster";
 import { Home } from "@/pages/home";
@@ -24,10 +27,14 @@ function Router() {
 
 function App() {
   return (
-    <GalleryProvider>
-      <Router />
-      <Toaster />
-    </GalleryProvider>
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+      <QueryClientProvider client={queryClient}>
+        <GalleryProvider>
+          <Router />
+          <Toaster />
+        </GalleryProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
 

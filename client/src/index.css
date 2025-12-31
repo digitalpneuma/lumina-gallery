@@ -41,67 +41,79 @@
 }
 
 :root {
-  /* Minimalist Light Theme - Clean, Airy, Gallery-like */
-  --background: 0 0% 98%;      /* #FAFAFA */
-  --foreground: 240 10% 3.9%;  /* #09090b */
+  /* Ministry Brand Theme - Modern & Dynamic */
+  --background: 0 0% 98%;      /* Keep airy feel #FAFAFA */
+  --foreground: 0 0% 10%;      /* Near-black text */
 
   --card: 0 0% 100%;
-  --card-foreground: 240 10% 3.9%;
+  --card-foreground: 0 0% 10%;
 
   --popover: 0 0% 100%;
-  --popover-foreground: 240 10% 3.9%;
+  --popover-foreground: 0 0% 10%;
 
-  --primary: 240 5.9% 10%;     /* Dark charcoal */
-  --primary-foreground: 0 0% 98%;
+  --primary: 209 52% 28%;      /* Ministry Navy #22476c */
+  --primary-foreground: 0 0% 100%;
 
-  --secondary: 240 4.8% 95.9%; /* Very light grey */
-  --secondary-foreground: 240 5.9% 10%;
+  --secondary: 12 100% 92%;    /* Very light blush */
+  --secondary-foreground: 209 52% 28%;
 
-  --muted: 240 4.8% 95.9%;
-  --muted-foreground: 240 3.8% 46.1%;
+  --muted: 0 1% 92%;           /* Light neutral */
+  --muted-foreground: 0 1% 37%; /* Ministry Gray #5d5e5e */
 
-  --accent: 240 4.8% 95.9%;
-  --accent-foreground: 240 5.9% 10%;
+  --accent: 271 31% 78%;       /* Dusty Lavender #C8B6D9 */
+  --accent-foreground: 209 52% 28%;
 
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 0 0% 98%;
 
-  --border: 240 5.9% 90%;
-  --input: 240 5.9% 90%;
-  --ring: 240 10% 3.9%;
+  --border: 0 1% 90%;
+  --input: 0 1% 90%;
+  --ring: 209 52% 28%;         /* Navy focus rings */
 
   --radius: 0.5rem;
+
+  /* Custom Pastel Tokens */
+  --soft-blush: 12 100% 82%;   /* #FFB4A2 */
+  --dusty-lavender: 271 31% 78%; /* #C8B6D9 */
+  --soft-sage: 150 25% 78%;    /* #B8D4C6 */
+  --navy-dark: 209 52% 20%;    /* Darker navy variant */
 }
 
 .dark {
-  /* Dark Mode - Gallery at Night */
-  --background: 240 10% 3.9%;
-  --foreground: 0 0% 98%;
+  /* Dark Mode - Navy-Tinted Gallery */
+  --background: 210 35% 8%;    /* Navy-tinted dark #0F1419 */
+  --foreground: 0 0% 96%;
 
-  --card: 240 10% 3.9%;
-  --card-foreground: 0 0% 98%;
+  --card: 209 40% 14%;         /* Navy-dark cards #1A2632 */
+  --card-foreground: 0 0% 96%;
 
-  --popover: 240 10% 3.9%;
-  --popover-foreground: 0 0% 98%;
+  --popover: 209 40% 14%;
+  --popover-foreground: 0 0% 96%;
 
-  --primary: 0 0% 98%;
-  --primary-foreground: 240 5.9% 10%;
+  --primary: 12 100% 82%;      /* Soft Blush primary #FFB4A2 */
+  --primary-foreground: 209 52% 28%;
 
-  --secondary: 240 3.7% 15.9%;
-  --secondary-foreground: 0 0% 98%;
+  --secondary: 209 52% 20%;    /* Dark navy #16283A */
+  --secondary-foreground: 0 0% 96%;
 
-  --muted: 240 3.7% 15.9%;
-  --muted-foreground: 240 5% 64.9%;
+  --muted: 210 25% 18%;        /* Navy-gray #232D3A */
+  --muted-foreground: 0 0% 65%;
 
-  --accent: 240 3.7% 15.9%;
-  --accent-foreground: 0 0% 98%;
+  --accent: 271 31% 68%;       /* Adjusted lavender #B8A3CE */
+  --accent-foreground: 0 0% 96%;
 
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 0 0% 98%;
 
-  --border: 240 3.7% 15.9%;
-  --input: 240 3.7% 15.9%;
-  --ring: 240 4.9% 83.9%;
+  --border: 210 30% 22%;       /* Navy-gray border #293846 */
+  --input: 210 30% 22%;
+  --ring: 12 100% 82%;         /* Blush focus rings */
+
+  /* Dark Mode Pastel Adjustments */
+  --soft-blush: 12 100% 82%;
+  --dusty-lavender: 271 31% 68%;
+  --soft-sage: 150 25% 70%;
+  --navy-light: 209 52% 40%;
 }
 
 @layer base {
@@ -113,5 +125,59 @@
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif tracking-tight;
+  }
+}
+
+@layer utilities {
+  /* Pastel Backgrounds */
+  .bg-blush {
+    background-color: hsl(var(--soft-blush));
+  }
+  .bg-lavender {
+    background-color: hsl(var(--dusty-lavender));
+  }
+  .bg-sage {
+    background-color: hsl(var(--soft-sage));
+  }
+
+  /* Pastel Text Colors */
+  .text-blush {
+    color: hsl(var(--soft-blush));
+  }
+  .text-lavender {
+    color: hsl(var(--dusty-lavender));
+  }
+  .text-sage {
+    color: hsl(var(--soft-sage));
+  }
+
+  /* Navy Gradient Header */
+  .bg-navy-gradient {
+    background: linear-gradient(135deg,
+      hsl(209 52% 28%),
+      hsl(209 52% 20%));
+  }
+
+  /* Pastel Hover Overlay */
+  .pastel-overlay {
+    background: linear-gradient(45deg,
+      hsl(12 100% 82% / 0.25),
+      hsl(271 31% 78% / 0.25));
+  }
+
+  /* Accent Bars for Cards */
+  .accent-bar-blush {
+    border-left: 3px solid hsl(var(--soft-blush));
+  }
+  .accent-bar-lavender {
+    border-left: 3px solid hsl(var(--dusty-lavender));
+  }
+  .accent-bar-sage {
+    border-left: 3px solid hsl(var(--soft-sage));
+  }
+
+  /* Button Hover Glow */
+  .btn-glow-blush:hover {
+    box-shadow: 0 0 20px hsl(12 100% 82% / 0.5);
   }
 }

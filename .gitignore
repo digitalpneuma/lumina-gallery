@@ -23,7 +23,18 @@ dist
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+logs/
+*.log
+
+# Database
+database.sqlite
+database.sqlite-shm
+database.sqlite-wal
+*.db
 
 # Uploads
 uploads/
 client/public/uploads/
+
+# PM2
+.pm2

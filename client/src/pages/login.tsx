@@ -4,11 +4,13 @@ import { useGallery } from "@/lib/gallery-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Lock } from "lucide-react";
+import { Lock, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export function Login() {
+  const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { login, isAdmin } = useGallery();
   const [, setLocation] = useLocation();
   const { toast } = useToast();
@@ -18,14 +20,21 @@ export function Login() {
     return null;
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const success = login(password);
-    if (success) {
-      toast({ title: "Welcome back", description: "You are now logged in as admin." });
-      setLocation("/admin");
-    } else {
-      toast({ title: "Access Denied", description: "Incorrect password.", variant: "destructive" });
+    setIsLoading(true);
+    try {
+      const success = await login(username, password);
+      if (success) {
+        toast({ title: "Welcome back", description: "You are now logged in as admin." });
+        setLocation("/admin");
+      } else {
+        toast({ title: "Access Denied", description: "Invalid username or password.", variant: "destructive" });
+      }
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to login. Please try again.", variant: "destructive" });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -43,15 +52,32 @@ export function Login() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Input
-                type="password"
-                placeholder="Password (try 'admin')"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="text-center tracking-widest"
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
               />
             </div>
-            <Button type="submit" className="w-full">
-              Unlock
+            <div className="space-y-2">
+              <Input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="tracking-widest"
+                required
+              />
+            </div>
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Logging in...
+                </>
+              ) : (
+                "Unlock"
+              )}
             </Button>
           </form>
         </CardContent>
